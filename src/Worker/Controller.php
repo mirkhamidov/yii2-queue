@@ -66,7 +66,7 @@ abstract class Controller extends \yii\base\Controller
             /* @var $param \ReflectionParameter */
             $name = $param->getName();
             if (isset($params[$name])) {
-                if ($param->isArray() && !is_array($params[$name])) {
+                if ($param->getType() && $param->getType()->getName() === 'array' && !is_array($params[$name])) {
                     $args[] = preg_split('/\s*,\s*/', $params[$name]);
                 } else {
                     $args[] = $params[$name];

@@ -175,13 +175,17 @@ class ProcessRunner extends \yii\base\Component implements IteratorAggregate
      */
     public function runProcess( $command )
     {
+        if (is_string($command)) {
+            $command = explode(' ', $command);
+        }
+
         $process = new Process(
             $command,
             $this->cwd ? $this->cwd : getcwd(),
-            $this->env
+            is_array($this->env) ? $this->env : []
         );
 
-        $this->stdout('Running ' . $command . ' (mode: ' . ($this->getIsSingleThreaded() ? 'single' : 'multi') . ')' . PHP_EOL);
+        $this->stdout('Running ' . implode(' ', $command) . ' (mode: ' . ($this->getIsSingleThreaded() ? 'single' : 'multi') . ')' . PHP_EOL);
 
         $process->setTimeout($this->getTimeout());
         $process->setIdleTimeout($this->getIdleTimeout());
